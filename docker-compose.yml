@@ -1,14 +1,22 @@
-version: '3'
+version: '3.7'
+
 services:
   meuapp:
-    image: meuapp:latest
+    build: .
     ports:
       - "8000:8000"
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    volumes:
+      - ./:/app/
     depends_on:
       - mongodb
 
+
   mongodb:
-    image: mongo:latest
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
     ports:
       - "27017:27017"
     volumes:
